@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/LinearLayout1"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+     >
+
+
+    <fragment
+        android:id="@+id/CategoryListFG"
+        android:name="com.next.grocerysale.ItemCategoryListFragment"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+        />
+
+     <fragment
+        android:id="@+id/itemListFG"
+        android:name="com.next.grocerysale.ItemDetailFragment"
+       android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="match_parent"
+     />
+</LinearLayout>

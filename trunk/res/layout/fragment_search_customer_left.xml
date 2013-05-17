@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:scrollbars="vertical" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp" >
+
+        <RadioButton
+            android:id="@+id/bylocationRB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bylocation"
+            android:textColor="@color/blue_strock"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/statesearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/state"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/statesearchSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/districtsearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/district"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/districtsearchSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/citySearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/city"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/citysearchSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/colonoysearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/colony"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <Spinner
+            android:id="@+id/colonoysearchSP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black" />
+
+        <RadioButton
+            android:id="@+id/bymobileRbtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/bymobile"
+            android:textColor="@color/blue_strock"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/mobileSearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/mobile"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/mobileSearchET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:background="@drawable/edittext_selector"
+             />
+ 
+
+        <RadioButton
+            android:id="@+id/byIDRBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:text="@string/byID"
+            android:textColor="@color/blue_strock"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/byIDSearchTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/id"
+            android:textColor="@color/black"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/byIDSearchET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:background="@drawable/edittext_selector"
+             />
+
+        
+    </LinearLayout>
+
+</ScrollView>

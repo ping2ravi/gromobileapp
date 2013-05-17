@@ -32,8 +32,8 @@ import com.next.grocerysale.server.services.DataServices;
 
 public class DataServicesImpl implements DataServices {
 
-	private static final String baseUrl = "http://192.168.1.4:8081/Grocery/api/";
-	//private static final String baseUrl = "http://jaatmusic.com:8082/grocery/api/";
+	//private static final String baseUrl = "http://192.168.1.4:8081/Grocery/api/";
+	private static final String baseUrl = "http://208.109.232.106:8082/grocery/api/";
 	
 	private static final String getAllItemCategoriesUrl = "category/getallcategories";
 	private static final String getAllItemByCategoryUrl = "item/getitembycategory";

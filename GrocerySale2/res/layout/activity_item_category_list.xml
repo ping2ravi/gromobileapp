@@ -1,0 +1,14 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <fragment
+        android:id="@+id/CategoryListFG"
+        android:name="com.next.grocerysale.ItemCategoryListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ItemListActivity"
+        tools:layout="@android:layout/list_content" />
+
+</FrameLayout>

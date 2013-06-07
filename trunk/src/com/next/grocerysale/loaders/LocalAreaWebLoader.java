@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.next.core.exception.AppException;
 import com.next.grocery.client.LocalAreaWeb;
 import com.next.grocerysale.server.services.DataServices;
 import com.next.grocerysale.services.impl.DataServiceFactory;
@@ -26,7 +27,13 @@ public class LocalAreaWebLoader extends AsyncTaskLoader<List<LocalAreaWeb>> {
 
 	@Override
 	public List<LocalAreaWeb> loadInBackground() {
-		return dataServices.getAllLocalAreaOfCityVillage(itemid);
+		try {
+			return dataServices.getAllLocalAreaOfCityVillage(itemid);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

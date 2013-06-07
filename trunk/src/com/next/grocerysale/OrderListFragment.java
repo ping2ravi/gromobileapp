@@ -18,6 +18,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ProgressBar;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
@@ -52,6 +53,8 @@ public class OrderListFragment extends Fragment implements
 	private ArrayList<ItemCategoryWeb> selectedItemCategoryList;
 	ListView listview;
 
+	private ProgressBar progress;
+
 	public interface Callbacks {
 
 		public void onItemCategorySelected(ItemCategoryWeb itemCategoryWeb);
@@ -82,7 +85,8 @@ public class OrderListFragment extends Fragment implements
 		View view = inflater.inflate(R.layout.fragment_item_category_list,
 				container, false);
 		itemCategoryLoader = new ItemCategoryLoader(this.getActivity());
-
+	/*	progress=(ProgressBar)view.findViewById(R.id.progressBarSearch);*/
+	
 		selectedItemCategoryList = new ArrayList<ItemCategoryWeb>();
 		// Create an empty adapter we will use to display the loaded data.
 		mAdapter = new ItemCategoryListAdapter(getActivity(),
@@ -160,7 +164,7 @@ public class OrderListFragment extends Fragment implements
 
 	@Override
 	public Loader<List<ItemCategoryWeb>> onCreateLoader(int id, Bundle args) {
-
+	/*	progress.setVisibility(View.VISIBLE);*/
 		return itemCategoryLoader;
 	}
 
@@ -190,6 +194,7 @@ public class OrderListFragment extends Fragment implements
 		}
 		categoryListStack.clear();
 		showItemCategoryList(itemCategoryTree.get(0L));
+		/*progress.setVisibility(View.GONE);*/
 	}
 
 	private void showItemCategoryList(List<ItemCategoryWeb> oneList) {

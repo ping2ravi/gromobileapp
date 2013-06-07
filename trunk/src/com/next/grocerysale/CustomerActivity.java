@@ -21,13 +21,13 @@ public class CustomerActivity extends BaseActivity {
 			intent = new Intent(CustomerActivity.this,
 					SearchCustomerActivity.class);
 			startActivity(intent);
-			finish();
+			//finish();
 			break;
 		case R.id.createoptionBtn:
 			intent = new Intent(CustomerActivity.this,
 					CreateCustomerActivity.class);
 			startActivity(intent);
-			finish();
+			//finish();
 			break;
 
 		}

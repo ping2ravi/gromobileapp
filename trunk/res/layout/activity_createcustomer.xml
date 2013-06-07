@@ -29,7 +29,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp"
-           
             android:background="@drawable/edittext_selector"
             android:inputType="textPersonName" />
 
@@ -84,22 +83,29 @@
             android:background="@drawable/edittext_selector"
             android:inputType="textEmailAddress" />
 
-        <TextView
+       
+
+        <ProgressBar
+            android:id="@+id/progressBar1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+ <TextView
             android:id="@+id/StateTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/state"
             android:textColor="@color/black"
             android:textSize="14sp" />
-
         <Spinner
             android:id="@+id/StateSP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-             android:hint="email"
-            android:layout_marginTop="5dp" />
- <TextView
+            android:layout_marginTop="5dp"
+            android:hint="email" />
+
+        <TextView
             android:id="@+id/districtTV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -113,6 +119,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp" />
+
         <TextView
             android:id="@+id/cityTV"
             android:layout_width="match_parent"
@@ -127,8 +134,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="5dp" />
-
-       
 
         <TextView
             android:id="@+id/colonyTV"

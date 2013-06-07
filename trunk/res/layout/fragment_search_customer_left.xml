@@ -75,6 +75,12 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black" />
 
+        <ProgressBar
+            android:id="@+id/searchProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
+
         <RadioButton
             android:id="@+id/bymobileRbtn"
             android:layout_width="wrap_content"
@@ -95,10 +101,8 @@
             android:id="@+id/mobileSearchET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:background="@drawable/edittext_selector"
-             />
- 
+            android:inputType="textPersonName" />
 
         <RadioButton
             android:id="@+id/byIDRBtn"
@@ -121,11 +125,8 @@
             android:id="@+id/byIDSearchET"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:background="@drawable/edittext_selector"
-             />
-
-        
+            android:inputType="textPersonName" />
     </LinearLayout>
 
 </ScrollView>

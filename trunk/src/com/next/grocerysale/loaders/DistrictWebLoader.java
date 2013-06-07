@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.AsyncTaskLoader;
 import android.content.Context;
 
+import com.next.core.exception.AppException;
 import com.next.grocery.client.DistrictWeb;
 import com.next.grocerysale.server.services.DataServices;
 import com.next.grocerysale.services.impl.DataServiceFactory;
@@ -26,8 +27,13 @@ public class DistrictWebLoader extends AsyncTaskLoader<List<DistrictWeb>> {
 
 	@Override
 	public List<DistrictWeb> loadInBackground() {
-		return dataServices.getAllDistrictOfState(itemid);
-
+		try {
+			return dataServices.getAllDistrictOfState(itemid);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@Override

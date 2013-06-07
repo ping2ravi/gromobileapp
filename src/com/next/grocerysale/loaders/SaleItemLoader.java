@@ -6,6 +6,7 @@ import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.util.Log;
 
+import com.next.core.exception.AppException;
 import com.next.grocery.client.ext.ItemWithItemPackExtWeb;
 import com.next.grocerysale.server.services.DataServices;
 import com.next.grocerysale.services.impl.DataServiceFactory;
@@ -28,8 +29,14 @@ public class SaleItemLoader extends
 
 		Log.i("SaleItemLoader", "loadInBackground");
 
-		return dataServices.getItemsOfCategory(itemCategoryId,5,5);
+		try {
+			return dataServices.getItemsOfCategory(itemCategoryId,5,5);
+		} catch (AppException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// return cachedSaleItems;
+		return null;
 
 	}
 

@@ -26,8 +26,8 @@ public class BaseActivity extends Activity {
 		return true;
 	}
 
-	public static void log(String string) {
-		Log.e("pos", string);
+	public void log(String string) {
+		Log.e(this.getClass().getCanonicalName(), string);
 	}
 
 	public void toast(String string) {

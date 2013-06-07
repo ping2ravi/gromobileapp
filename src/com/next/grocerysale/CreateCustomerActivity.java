@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,13 +73,15 @@ public class CreateCustomerActivity extends Activity implements
 	StatedataListAdapter statedataListAdapter;
 	CityDataListAdapter cityDataListAdapter;
 	DistrictDataListAdapter districtDataListAdapter;
+	private ProgressBar progress;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_createcustomer);
-		Bundle bundle = null;
 
+		progress = (ProgressBar) findViewById(R.id.progressBar1);
+		progress.setVisibility(View.GONE);
 		stateSP = (Spinner) findViewById(R.id.StateSP);
 		colonySP = (Spinner) findViewById(R.id.colonySP);
 		districtSP = (Spinner) findViewById(R.id.districtSP);
@@ -91,8 +94,8 @@ public class CreateCustomerActivity extends Activity implements
 					@Override
 					public Loader<List<StateWeb>> onCreateLoader(int id,
 							Bundle args) {
-						// TODO Auto-generated method stub
 
+						progress.setVisibility(View.VISIBLE);
 						return new StateWebLoader(CreateCustomerActivity.this);
 					}
 
@@ -100,12 +103,11 @@ public class CreateCustomerActivity extends Activity implements
 					public void onLoadFinished(Loader<List<StateWeb>> arg0,
 							List<StateWeb> arg1) {
 						setStateAdapter(arg1);
-
+						progress.setVisibility(View.GONE);
 					}
 
 					@Override
 					public void onLoaderReset(Loader<List<StateWeb>> arg0) {
-						// TODO Auto-generated method stub
 
 					}
 
@@ -221,7 +223,7 @@ public class CreateCustomerActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-				// TODO Auto-generated method stub
+
 				StateWeb item = statedataListAdapter.getItem(position);
 				final Long itemid = item.getId();
 				Bundle bundle = null;
@@ -231,7 +233,7 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<DistrictWeb>> onCreateLoader(
 									int id, Bundle args) {
-								// TODO Auto-generated method stub
+								progress.setVisibility(View.VISIBLE);
 								return new DistrictWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -241,13 +243,12 @@ public class CreateCustomerActivity extends Activity implements
 									Loader<List<DistrictWeb>> arg0,
 									List<DistrictWeb> arg1) {
 								setDistrictAdapter(arg1);
-
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override
 							public void onLoaderReset(
 									Loader<List<DistrictWeb>> arg0) {
-								// TODO Auto-generated method stub
 
 							}
 
@@ -258,7 +259,6 @@ public class CreateCustomerActivity extends Activity implements
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});
@@ -286,7 +286,7 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<CityVillageWeb>> onCreateLoader(
 									int id, Bundle args) {
-
+								progress.setVisibility(View.VISIBLE);
 								return new CityVillageWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -296,12 +296,12 @@ public class CreateCustomerActivity extends Activity implements
 									Loader<List<CityVillageWeb>> arg0,
 									List<CityVillageWeb> citylist) {
 								setCityAdapter(citylist);
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override
 							public void onLoaderReset(
 									Loader<List<CityVillageWeb>> arg0) {
-								// TODO Auto-generated method stub
 
 							}
 						});
@@ -337,7 +337,7 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<LocalAreaWeb>> onCreateLoader(
 									int id, Bundle args) {
-								// TODO Auto-generated method stub
+								progress.setVisibility(View.VISIBLE);
 								return new LocalAreaWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -347,13 +347,12 @@ public class CreateCustomerActivity extends Activity implements
 									Loader<List<LocalAreaWeb>> arg0,
 									List<LocalAreaWeb> arg1) {
 								setColoneyAdapter(arg1);
-
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override
 							public void onLoaderReset(
 									Loader<List<LocalAreaWeb>> arg0) {
-								// TODO Auto-generated method stub
 
 							}
 
@@ -387,7 +386,6 @@ public class CreateCustomerActivity extends Activity implements
 
 			@Override
 			public void onNothingSelected(AdapterView<?> arg0) {
-				// TODO Auto-generated method stub
 
 			}
 		});

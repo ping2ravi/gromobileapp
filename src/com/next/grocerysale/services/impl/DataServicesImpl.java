@@ -3,6 +3,7 @@ package com.next.grocerysale.services.impl;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -12,6 +13,8 @@ import org.springframework.web.client.RestTemplate;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.next.core.exception.AppException;
 import com.next.grocery.client.CityVillageWeb;
 import com.next.grocery.client.CustomerWeb;
 import com.next.grocery.client.DistrictWeb;
@@ -29,6 +32,7 @@ import com.next.grocery.client.ext.requests.SaveCustomerRequest;
 import com.next.grocery.client.ext.requests.SearchCustomerByCityRequest;
 import com.next.grocery.client.ext.requests.SearchCustomerByLocalAreaRequest;
 import com.next.grocerysale.server.services.DataServices;
+import com.next.grocerysale.util.JsonUtil;
 
 public class DataServicesImpl implements DataServices {
 
@@ -70,8 +74,21 @@ public class DataServicesImpl implements DataServices {
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
 		ResponseEntity<T> responseNtity = restTemplate.postForEntity(url, requestEntity, responseType);
-		Log.i("DataServicesImpl","responseNtity.getBody : "+ responseNtity.getBody());
 		return responseNtity.getBody();
+	}
+	public <T> T postSpringData(String url, Object message,Class<T> responseType) throws AppException {
+		Log.i("DataServicesImpl","Hitting Post Url "+ url);
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.setContentType(new MediaType("application", "json"));
+		
+		HttpEntity<Object> requestEntity = new HttpEntity<Object>(message,requestHeaders);
+		
+		RestTemplate restTemplate = new RestTemplate(true);
+
+		String response = restTemplate.postForObject(url, requestEntity, String.class);
+		checkResponseForError(response);
+		T returnObject = new Gson().fromJson(response, responseType);
+		return returnObject;
 	}
 	public static <T> T getSpringData(String url, Class<T> responseType) {
 		Log.i("DataServicesImpl","Hitting Get Url "+ url);
@@ -85,16 +102,27 @@ public class DataServicesImpl implements DataServices {
 		Log.i("DataServicesImpl","responseNtity.getBody : "+ responseNtity.getBody());
 		return responseNtity.getBody();
 	}
-	
+	private static void checkResponseForError(String response) throws AppException{
+		try{
+			JSONObject jsonObject = new JSONObject(response);
+			String errorMessage = JsonUtil.getSringFromJsonObject(jsonObject,"errorMessage");
+			if(errorMessage == null || errorMessage.equals("")){
+				return;
+			}
+			throw new AppException(errorMessage);
+		}catch(Exception ex){
+			
+		}
+	}
 	@Override
-	public List<ItemCategoryWeb> getAllItemCategories() {
+	public List<ItemCategoryWeb> getAllItemCategories() throws AppException{
 		String url = baseUrl + getAllItemCategoriesUrl;
 		ItemCategoryWeb[] itemCategoryList = getSpringData(url, ItemCategoryWeb[].class);
 		return Arrays.asList(itemCategoryList);
 	}
 
 	@Override
-	public List<ItemWithItemPackExtWeb> getItemsOfCategory(Long itemCategoryId,int pageNumber,int pageSize) {
+	public List<ItemWithItemPackExtWeb> getItemsOfCategory(Long itemCategoryId,int pageNumber,int pageSize)  throws AppException{
 		GetItemByCategoryRequest getItemByCategoryRequest = new GetItemByCategoryRequest();
 		getItemByCategoryRequest.setItemCategoryId(itemCategoryId);
 		getItemByCategoryRequest.setPageNumber(pageNumber);
@@ -105,14 +133,14 @@ public class DataServicesImpl implements DataServices {
 	}
 
 	@Override
-	public CustomerWeb saveCustomer(SaveCustomerRequest saveCustomerRequest) {
+	public CustomerWeb saveCustomer(SaveCustomerRequest saveCustomerRequest) throws AppException {
 		String url = baseUrl + saveCustomerUrl;
 		CustomerWeb customerWeb = postSpringData(url, CustomerWeb.class, saveCustomerRequest);
 		return customerWeb;
 	}
 
 	@Override
-	public List<CustomerWeb> getCustomerOfCity(Long cityId, int pageNumber,int pageSize) {
+	public List<CustomerWeb> getCustomerOfCity(Long cityId, int pageNumber,int pageSize) throws AppException {
 		SearchCustomerByCityRequest searchCustomerByCityRequest = new SearchCustomerByCityRequest();
 		searchCustomerByCityRequest.setCityId(cityId);
 		searchCustomerByCityRequest.setPageNumber(pageNumber);
@@ -123,7 +151,7 @@ public class DataServicesImpl implements DataServices {
 	}
 
 	@Override
-	public List<CustomerWeb> getCustomerOfLocalArea(Long localAreaId, int pageNumber, int pageSize) {
+	public List<CustomerWeb> getCustomerOfLocalArea(Long localAreaId, int pageNumber, int pageSize) throws AppException {
 		SearchCustomerByLocalAreaRequest searchCustomerByLocalAreaRequest = new SearchCustomerByLocalAreaRequest();
 		searchCustomerByLocalAreaRequest.setLocalAreaId(localAreaId);
 		searchCustomerByLocalAreaRequest.setPageNumber(pageNumber);
@@ -134,27 +162,27 @@ public class DataServicesImpl implements DataServices {
 	}
 
 	@Override
-	public CustomerWeb getCustomerById(Long customerId) {
+	public CustomerWeb getCustomerById(Long customerId) throws AppException {
 		String url = baseUrl + getCustomerByIdUrl+"/"+customerId;
 		CustomerWeb customerWeb = getSpringData(url, CustomerWeb.class);
 		return customerWeb;
 	}
 
 	@Override
-	public CustomerWeb getCustomerByMobileNumber(String mobileNumber) {
+	public CustomerWeb getCustomerByMobileNumber(String mobileNumber) throws AppException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<StateWeb> getAllStates() {
+	public List<StateWeb> getAllStates() throws AppException {
 		String url = baseUrl + getAllStatesUrl;
 		StateWeb[] stateWeb = getSpringData(url, StateWeb[].class);
 		return Arrays.asList(stateWeb);
 	}
 
 	@Override
-	public List<DistrictWeb> getAllDistrictOfState(Long stateId) {
+	public List<DistrictWeb> getAllDistrictOfState(Long stateId) throws AppException {
 		String url = baseUrl + getAllDistrictsOfStatesUrl;
 		GetDistrictsRequest getDistrictsRequest = new GetDistrictsRequest();
 		getDistrictsRequest.setStateId(stateId);
@@ -163,7 +191,7 @@ public class DataServicesImpl implements DataServices {
 	}
 
 	@Override
-	public List<CityVillageWeb> getAllCityVillageOfDistrict(Long districtId) {
+	public List<CityVillageWeb> getAllCityVillageOfDistrict(Long districtId) throws AppException {
 		String url = baseUrl + getAllCitiesOfDistrictsUrl;
 		GetCityVillageRequest getCityVillageRequest = new GetCityVillageRequest();
 		getCityVillageRequest.setDistrictId(districtId);
@@ -172,7 +200,7 @@ public class DataServicesImpl implements DataServices {
 	}
 
 	@Override
-	public List<LocalAreaWeb> getAllLocalAreaOfCityVillage(Long cityVillageId) {
+	public List<LocalAreaWeb> getAllLocalAreaOfCityVillage(Long cityVillageId) throws AppException {
 		String url = baseUrl + getAllLocalAreaOfCityUrl;
 		GetLocalAreaRequest getLocalAreaRequest = new GetLocalAreaRequest();
 		getLocalAreaRequest.setCityVillageId(cityVillageId);
@@ -180,12 +208,12 @@ public class DataServicesImpl implements DataServices {
 		return Arrays.asList(localAreaList);
 	}
 	@Override
-	public UserWeb login(String loginId, String password) {
+	public UserWeb login(String loginId, String password) throws AppException {
 		String url = baseUrl + loginUrl;
 		LoginRequest loginRequest = new LoginRequest();
 		loginRequest.setLoginId(loginId);
 		loginRequest.setPassword(password);
-		UserWeb user = postSpringData(url, UserWeb.class,loginRequest);
+		UserWeb user = postSpringData(url, loginRequest,UserWeb.class);
 		return user;
 	}
 

@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 
@@ -40,8 +41,8 @@ public class SearchCustomerLeftFragment extends Fragment implements
 	private static final int DISTRICT = 1;
 	private static final int CITY = 2;
 	private static final int COLONEY = 3;
-	
 
+	ProgressBar progress;
 	Spinner stateSP, citySP, colonySP, districtSP;
 
 	RadioButton locationRBtn, CustomerIDRBtn, mobileRBtn;
@@ -61,7 +62,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 
 		View view = inflater.inflate(R.layout.fragment_search_customer_left,
 				null);
-
+		progress = (ProgressBar) view.findViewById(R.id.searchProgressbar);
 		locationRBtn = (RadioButton) view.findViewById(R.id.bylocationRB);
 		CustomerIDRBtn = (RadioButton) view.findViewById(R.id.byIDRBtn);
 		mobileRBtn = (RadioButton) view.findViewById(R.id.bymobileRbtn);
@@ -73,8 +74,6 @@ public class SearchCustomerLeftFragment extends Fragment implements
 		CustomerIDRBtn.setOnClickListener(this);
 		mobileRBtn.setOnClickListener(this);
 
-		
-
 		Bundle bundle = null;
 		getLoaderManager().initLoader(1, bundle,
 				new LoaderCallbacks<List<StateWeb>>() {
@@ -83,7 +82,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 					public Loader<List<StateWeb>> onCreateLoader(int id,
 							Bundle args) {
 						// TODO Auto-generated method stub
-
+						progress.setVisibility(View.VISIBLE);
 						return new StateWebLoader(getActivity());
 					}
 
@@ -91,6 +90,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 					public void onLoadFinished(Loader<List<StateWeb>> arg0,
 							List<StateWeb> arg1) {
 						setStateAdapter(arg1);
+						progress.setVisibility(View.GONE);
 
 					}
 
@@ -172,6 +172,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 							public Loader<List<DistrictWeb>> onCreateLoader(
 									int id, Bundle args) {
 								// TODO Auto-generated method stub
+								progress.setVisibility(View.VISIBLE);
 								return new DistrictWebLoader(getActivity(),
 										itemid);
 							}
@@ -181,7 +182,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 									Loader<List<DistrictWeb>> arg0,
 									List<DistrictWeb> arg1) {
 								setDistrictAdapter(arg1);
-
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override
@@ -225,7 +226,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 							@Override
 							public Loader<List<CityVillageWeb>> onCreateLoader(
 									int id, Bundle args) {
-
+								progress.setVisibility(View.VISIBLE);
 								return new CityVillageWebLoader(getActivity(),
 										itemid);
 							}
@@ -235,6 +236,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 									Loader<List<CityVillageWeb>> arg0,
 									List<CityVillageWeb> citylist) {
 								setCityAdapter(citylist);
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override
@@ -276,6 +278,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 							public Loader<List<LocalAreaWeb>> onCreateLoader(
 									int id, Bundle args) {
 								// TODO Auto-generated method stub
+								progress.setVisibility(View.VISIBLE);
 								return new LocalAreaWebLoader(getActivity(),
 										itemid);
 							}
@@ -285,7 +288,7 @@ public class SearchCustomerLeftFragment extends Fragment implements
 									Loader<List<LocalAreaWeb>> arg0,
 									List<LocalAreaWeb> arg1) {
 								setColoneyAdapter(arg1);
-
+								progress.setVisibility(View.GONE);
 							}
 
 							@Override

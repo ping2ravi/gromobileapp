@@ -30,4 +30,18 @@ public class SaleItemListAdapter extends ArrayAdapter<ItemWithItemPackExtWeb> {
 		// Change the icon for Windows and iPhone
 		return rowView;
 	}
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		LayoutInflater inflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.rowlayout_sale_item, parent,
+				false);
+		TextView textView = (TextView) rowView.findViewById(R.id.itemName);
+		textView.setText(getItem(position).getName());textView.setText("data");
+		// Change the icon for Windows and iPhone
+		return rowView;
+	}
+	
+	
 }

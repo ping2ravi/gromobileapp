@@ -12,12 +12,13 @@ import android.widget.TextView;
 import com.next.grocery.client.StateWeb;
 import com.next.grocerysale.R;
 
-public class StatedataListAdapter  extends ArrayAdapter<StateWeb> {
-Context context;
+public class StatedataListAdapter extends ArrayAdapter<StateWeb> {
+	Context context;
+
 	public StatedataListAdapter(Context context, int resource,
 			List<StateWeb> colony) {
 		super(context, resource, colony);
-		this.context=context;
+		this.context = context;
 	}
 
 	@Override
@@ -32,4 +33,19 @@ Context context;
 
 		return textView;
 
-	}}
+	}
+
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+		LayoutInflater inflater = (LayoutInflater) getContext()
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View rowView = inflater.inflate(R.layout.rowlayout_sale_item, parent,
+				false);
+		TextView textView = new TextView(context);
+		textView.setText(getItem(position).getName());
+
+		return textView;
+
+	}
+}

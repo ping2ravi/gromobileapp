@@ -31,4 +31,14 @@ public class CityDataListAdapter extends ArrayAdapter<CityVillageWeb> {
 		return textView;
 
 	}
+	
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+		CityVillageWeb item=getItem(position);
+		TextView textView = new TextView(context);
+		textView.setText(item.getName());
+
+		return textView;
+
+	}
 }

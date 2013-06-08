@@ -30,4 +30,16 @@ Context context;
 		return textView;
 
 	}
+	@Override
+	public View getDropDownView(int position, View convertView, ViewGroup parent) {
+
+		
+		TextView textView = new TextView(context);
+		textView.setText(getItem(position).getName());
+
+		return textView;
+
+	}
+	
+	
 }

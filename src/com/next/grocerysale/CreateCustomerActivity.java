@@ -1,5 +1,6 @@
 package com.next.grocerysale;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -100,9 +101,13 @@ public class CreateCustomerActivity extends Activity implements
 					}
 
 					@Override
-					public void onLoadFinished(Loader<List<StateWeb>> arg0,
-							List<StateWeb> arg1) {
-						setStateAdapter(arg1);
+					public void onLoadFinished(Loader<List<StateWeb>> arg0,List<StateWeb> arg1) {
+						List<StateWeb> states = new ArrayList<StateWeb>(arg1);
+						StateWeb selectState = new StateWeb();
+						selectState.setName("Select State");
+						selectState.setId(0L);
+						states.add(0,selectState);
+						setStateAdapter(states);
 						progress.setVisibility(View.GONE);
 					}
 
@@ -223,11 +228,14 @@ public class CreateCustomerActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-
+				if(position <= 0){
+					//Do not fire any event to load Districts
+					return;
+				}
 				StateWeb item = statedataListAdapter.getItem(position);
 				final Long itemid = item.getId();
 				Bundle bundle = null;
-				getLoaderManager().initLoader(2, bundle,
+				getLoaderManager().restartLoader(2, bundle,
 						new LoaderCallbacks<List<DistrictWeb>>() {
 
 							@Override
@@ -242,7 +250,12 @@ public class CreateCustomerActivity extends Activity implements
 							public void onLoadFinished(
 									Loader<List<DistrictWeb>> arg0,
 									List<DistrictWeb> arg1) {
-								setDistrictAdapter(arg1);
+								List<DistrictWeb> districts = new ArrayList<DistrictWeb>(arg1);
+								DistrictWeb selectDistrict = new DistrictWeb();
+								selectDistrict.setName("Select District");
+								selectDistrict.setId(-1L);
+								districts.add(0, selectDistrict);
+								setDistrictAdapter(districts);
 								progress.setVisibility(View.GONE);
 							}
 
@@ -277,10 +290,13 @@ public class CreateCustomerActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
+				if(position <= 0){
+					return;
+				}
 				DistrictWeb item = districtDataListAdapter.getItem(position);
 				final Long itemid = item.getId();
 				Bundle bundle = null;
-				getLoaderManager().initLoader(3, bundle,
+				getLoaderManager().restartLoader(3, bundle,
 						new LoaderCallbacks<List<CityVillageWeb>>() {
 
 							@Override
@@ -295,7 +311,12 @@ public class CreateCustomerActivity extends Activity implements
 							public void onLoadFinished(
 									Loader<List<CityVillageWeb>> arg0,
 									List<CityVillageWeb> citylist) {
-								setCityAdapter(citylist);
+								List<CityVillageWeb> cityVillageWebs = new ArrayList<CityVillageWeb>(citylist);
+								CityVillageWeb selectCityVillageWeb = new CityVillageWeb();
+								selectCityVillageWeb.setName("Select CIty/Village");
+								selectCityVillageWeb.setId(-1L);
+								cityVillageWebs.add(0,selectCityVillageWeb);
+								setCityAdapter(cityVillageWebs);
 								progress.setVisibility(View.GONE);
 							}
 
@@ -328,10 +349,13 @@ public class CreateCustomerActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
+				if(position <= 0){
+					return;
+				}
 				CityVillageWeb item = cityDataListAdapter.getItem(position);
 				final Long itemid = item.getId();
 				Bundle bundle = null;
-				getLoaderManager().initLoader(4, bundle,
+				getLoaderManager().restartLoader(4, bundle,
 						new LoaderCallbacks<List<LocalAreaWeb>>() {
 
 							@Override
@@ -346,7 +370,12 @@ public class CreateCustomerActivity extends Activity implements
 							public void onLoadFinished(
 									Loader<List<LocalAreaWeb>> arg0,
 									List<LocalAreaWeb> arg1) {
-								setColoneyAdapter(arg1);
+								List<LocalAreaWeb> localAreas = new ArrayList<LocalAreaWeb>(arg1);
+								LocalAreaWeb localAreaWeb = new LocalAreaWeb();
+								localAreaWeb.setName("Select Colony/Local Area");
+								localAreaWeb.setId(-1L);
+								localAreas.add(0,localAreaWeb);
+								setColoneyAdapter(localAreas);
 								progress.setVisibility(View.GONE);
 							}
 

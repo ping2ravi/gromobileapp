@@ -24,12 +24,15 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -75,6 +78,8 @@ public class CreateCustomerActivity extends Activity implements
 	CityDataListAdapter cityDataListAdapter;
 	DistrictDataListAdapter districtDataListAdapter;
 	private ProgressBar progress;
+	MapFragment map;
+	Marker marker;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +92,17 @@ public class CreateCustomerActivity extends Activity implements
 		colonySP = (Spinner) findViewById(R.id.colonySP);
 		districtSP = (Spinner) findViewById(R.id.districtSP);
 		citySP = (Spinner) findViewById(R.id.citySP);
-
+		map = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
+		
+		MarkerOptions markerOptions = new MarkerOptions();
+		markerOptions.draggable(true);
+		markerOptions.position(new LatLng(2.3, 5.8));
+		
+		
+		marker = map.getMap().addMarker(markerOptions);
+		
+		
+		
 		Bundle bundle1 = null;
 		getLoaderManager().initLoader(1, bundle1,
 				new LoaderCallbacks<List<StateWeb>>() {
@@ -213,7 +228,20 @@ public class CreateCustomerActivity extends Activity implements
 			break;
 		}
 	}
-
+	public void updateMapLocation(double lat,double lng,int depth){
+		LatLng newMarkerPosition = new LatLng(lat, lng);
+		marker.setPosition(newMarkerPosition);
+		
+		CameraPosition.Builder builder = CameraPosition.builder();
+		builder.target(newMarkerPosition);
+		builder.zoom(depth);
+		
+		CameraPosition cameraPosition = builder.build();
+		
+		CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+		map.getMap().animateCamera(cameraUpdate);
+		
+	}
 	public void setStateAdapter(List<StateWeb> statelist) {
 
 		statedataListAdapter = new StatedataListAdapter(
@@ -233,6 +261,8 @@ public class CreateCustomerActivity extends Activity implements
 					return;
 				}
 				StateWeb item = statedataListAdapter.getItem(position);
+				updateMapLocation(item.getLatitude() , item.getLongitude(), item.getDepth());
+				
 				final Long itemid = item.getId();
 				Bundle bundle = null;
 				getLoaderManager().restartLoader(2, bundle,
@@ -294,6 +324,9 @@ public class CreateCustomerActivity extends Activity implements
 					return;
 				}
 				DistrictWeb item = districtDataListAdapter.getItem(position);
+				
+				updateMapLocation(item.getLatitude() , item.getLongitude(), item.getDepth());
+				
 				final Long itemid = item.getId();
 				Bundle bundle = null;
 				getLoaderManager().restartLoader(3, bundle,
@@ -353,6 +386,7 @@ public class CreateCustomerActivity extends Activity implements
 					return;
 				}
 				CityVillageWeb item = cityDataListAdapter.getItem(position);
+				updateMapLocation(item.getLatitude() , item.getLongitude(), item.getDepth());
 				final Long itemid = item.getId();
 				Bundle bundle = null;
 				getLoaderManager().restartLoader(4, bundle,
@@ -410,7 +444,11 @@ public class CreateCustomerActivity extends Activity implements
 			@Override
 			public void onItemSelected(AdapterView<?> arg0, View arg1,
 					int position, long arg3) {
-
+				if(position <= 0){
+					return;
+				}
+				LocalAreaWeb selectedLocalArea = colonyDataListAdapter.getItem(position);
+				updateMapLocation(selectedLocalArea.getLatitude() , selectedLocalArea.getLongitude(), selectedLocalArea.getDepth());
 			}
 
 			@Override

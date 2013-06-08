@@ -11,7 +11,10 @@
     <permission
         android:name="com.next.grocerysale.permission.MAPS_RECEIVE"
         android:protectionLevel="signature" />
-
+   
+	<uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true"/>
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
@@ -31,10 +34,15 @@
         <uses-library
             android:name="com.google.android.maps"
             android:required="true" />
-
+		<!-- 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyC2eszG-aVj0Chx9NVen0bnaz6KcS6wGZg" />
+        -->
+         <meta-data
+    android:name="com.google.android.maps.v2.API_KEY"
+    android:value="AIzaSyDHA_Wt_Xgt-VyVyjHjK_nz1Qik2rLEYpU"/>
+         
         <activity
             android:name="SearchCustomerActivity"
             android:label="@string/title_search_customer" >

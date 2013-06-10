@@ -90,7 +90,7 @@
                 android:inputType="textEmailAddress" />
 
             <ProgressBar
-                android:id="@+id/progressBar1"
+                android:id="@+id/stateProgressBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
@@ -164,7 +164,7 @@
                 android:textSize="14sp" />
 
             <EditText
-                android:id="@+id/addrerss1ET"
+                android:id="@+id/address1ET"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"

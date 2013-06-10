@@ -69,7 +69,9 @@ public class DataServicesImpl implements DataServices {
 		requestHeaders.setContentType(new MediaType("application", "json"));
 		
 		HttpEntity<Object> requestEntity = new HttpEntity<Object>(message,requestHeaders);
-		
+		String postBody = new Gson().toJson(message);
+		Log.i("DataServicesImpl","Posting "+ postBody);
+
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
@@ -84,7 +86,8 @@ public class DataServicesImpl implements DataServices {
 		HttpEntity<Object> requestEntity = new HttpEntity<Object>(message,requestHeaders);
 		
 		RestTemplate restTemplate = new RestTemplate(true);
-
+		String postBody = new Gson().toJson(message);
+		Log.i("DataServicesImpl","Posting "+ postBody);
 		String response = restTemplate.postForObject(url, requestEntity, String.class);
 		checkResponseForError(response);
 		T returnObject = new Gson().fromJson(response, responseType);
@@ -186,7 +189,7 @@ public class DataServicesImpl implements DataServices {
 		String url = baseUrl + getAllDistrictsOfStatesUrl;
 		GetDistrictsRequest getDistrictsRequest = new GetDistrictsRequest();
 		getDistrictsRequest.setStateId(stateId);
-		DistrictWeb[] districtList = postSpringData(url, DistrictWeb[].class,getDistrictsRequest);
+		DistrictWeb[] districtList = postSpringData(url, getDistrictsRequest, DistrictWeb[].class);
 		return Arrays.asList(districtList);
 	}
 

@@ -5,14 +5,12 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Intent;
 import android.content.Loader;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -30,16 +28,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMapClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMapLongClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.next.core.exception.AppException;
+import com.next.grocery.client.AddressWeb;
 import com.next.grocery.client.CityVillageWeb;
+import com.next.grocery.client.CustomerWeb;
 import com.next.grocery.client.DistrictWeb;
 import com.next.grocery.client.LocalAreaWeb;
 import com.next.grocery.client.StateWeb;
+import com.next.grocery.client.ext.requests.SaveCustomerRequest;
 import com.next.grocerysale.adapter.CityDataListAdapter;
 import com.next.grocerysale.adapter.ColonyDataListAdapter;
 import com.next.grocerysale.adapter.DistrictDataListAdapter;
@@ -50,10 +51,11 @@ import com.next.grocerysale.loaders.LocalAreaWebLoader;
 import com.next.grocerysale.loaders.StateWebLoader;
 import com.next.grocerysale.server.services.DataServices;
 import com.next.grocerysale.services.impl.DataServiceFactory;
+import com.next.grocerysale.task.NextAsyncTask;
 
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 @SuppressLint("NewApi")
-public class CreateCustomerActivity extends Activity implements
+public class CreateCustomerActivity extends BaseActivity implements
 		OnMapClickListener, OnMapLongClickListener, OnMarkerDragListener
 
 {
@@ -71,23 +73,53 @@ public class CreateCustomerActivity extends Activity implements
 	private GoogleMap myMap;
 	boolean markerClicked;
 	TextView locationTV;
-	EditText nameET;
 
 	ColonyDataListAdapter colonyDataListAdapter;
 	StatedataListAdapter statedataListAdapter;
 	CityDataListAdapter cityDataListAdapter;
 	DistrictDataListAdapter districtDataListAdapter;
-	private ProgressBar progress;
+	private ProgressBar stateProgressBar;
+	private ProgressBar districtProgressBar;
+	private ProgressBar cityProgressBar;
+	private ProgressBar colonyProgressBar;
 	MapFragment map;
 	Marker marker;
 
+	private EditText nameEditText;
+	private EditText customerMobile1EditText;
+	private EditText customerMobile2EditText;
+	private EditText emailEditText;
+	
+	private EditText address1EditText;
+	private EditText address2EditText;
+	private EditText address3EditText;
+	private EditText pinEditText;
+	
+	
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_createcustomer);
+		
+		nameEditText = (EditText) findViewById(R.id.nameET);
+		customerMobile1EditText = (EditText) findViewById(R.id.customermobile1ET);
+		customerMobile2EditText = (EditText) findViewById(R.id.customermobile2ET);
+		emailEditText = (EditText) findViewById(R.id.emailET);
 
-		progress = (ProgressBar) findViewById(R.id.progressBar1);
-		progress.setVisibility(View.GONE);
+		address1EditText = (EditText) findViewById(R.id.address1ET);
+		address2EditText = (EditText) findViewById(R.id.address2ET);
+		address3EditText = (EditText) findViewById(R.id.address3ET);
+		pinEditText = (EditText) findViewById(R.id.pinET);
+
+		stateProgressBar = (ProgressBar) findViewById(R.id.stateProgressBar);
+		stateProgressBar.setVisibility(View.GONE);
+		districtProgressBar = (ProgressBar) findViewById(R.id.districtProgressBar);
+		districtProgressBar.setVisibility(View.GONE);
+		cityProgressBar = (ProgressBar) findViewById(R.id.cityProgressBar);
+		cityProgressBar.setVisibility(View.GONE);
+		colonyProgressBar = (ProgressBar) findViewById(R.id.colonyProgressBar);
+		colonyProgressBar.setVisibility(View.GONE);
 		stateSP = (Spinner) findViewById(R.id.StateSP);
 		colonySP = (Spinner) findViewById(R.id.colonySP);
 		districtSP = (Spinner) findViewById(R.id.districtSP);
@@ -111,7 +143,7 @@ public class CreateCustomerActivity extends Activity implements
 					public Loader<List<StateWeb>> onCreateLoader(int id,
 							Bundle args) {
 
-						progress.setVisibility(View.VISIBLE);
+						stateProgressBar.setVisibility(View.VISIBLE);
 						return new StateWebLoader(CreateCustomerActivity.this);
 					}
 
@@ -123,7 +155,7 @@ public class CreateCustomerActivity extends Activity implements
 						selectState.setId(0L);
 						states.add(0,selectState);
 						setStateAdapter(states);
-						progress.setVisibility(View.GONE);
+						stateProgressBar.setVisibility(View.GONE);
 					}
 
 					@Override
@@ -134,7 +166,6 @@ public class CreateCustomerActivity extends Activity implements
 				}).forceLoad();
 
 		// locationTV = (TextView) findViewById(R.id.locationTV);
-		nameET = (EditText) findViewById(R.id.nameET);
 		FragmentManager myFragmentManager = getFragmentManager();
 		MapFragment myMapFragment = (MapFragment) myFragmentManager
 				.findFragmentById(R.id.map);
@@ -173,36 +204,23 @@ public class CreateCustomerActivity extends Activity implements
 
 	@Override
 	public void onMapClick(LatLng point) {
-		// locationTV.setText(point.toString());
-		myMap.animateCamera(CameraUpdateFactory.newLatLng(point));
-
-		markerClicked = false;
 
 	}
 
 	@Override
 	public void onMapLongClick(LatLng point) {
-		// locationTV.setText("New Marker added at:: " + point.toString());
-		myMap.addMarker(new MarkerOptions().position(point).draggable(true));
-		markerClicked = false;
 	}
 
 	@Override
 	public void onMarkerDrag(Marker marker) {
-		// locationTV.setText("Marker " + marker.getId() + "Drag@ "
-		// + marker.getPosition());
 	}
 
 	@Override
 	public void onMarkerDragEnd(Marker marker) {
-		// locationTV.setText("Marker " + marker.getId() + "Drag@ "
-		// + marker.getPosition() + " Drag End");
 	}
 
 	@Override
 	public void onMarkerDragStart(Marker marker) {
-		// locationTV.setText("Marker " + marker.getId() + "Drag@ "
-		// + marker.getPosition() + " Drag Start");
 	}
 
 	public void onClick(View view)
@@ -213,11 +231,28 @@ public class CreateCustomerActivity extends Activity implements
 		switch (view.getId()) {
 
 		case R.id.savecustomerBtn:
-			String namedata = nameET.getText().toString();
-			Log.i("namedata", namedata);
-			intent = new Intent(CreateCustomerActivity.this,
-					SearchCustomerActivity.class);
-			intent.putExtra("namedata", namedata);
+			SaveCustomerRequest saveCustomerRequest = new SaveCustomerRequest();
+			CustomerWeb customer = new CustomerWeb();
+			customer.setName(nameEditText.getText().toString());
+			customer.setMobile1(customerMobile1EditText.getText().toString());
+			customer.setMobile2(customerMobile2EditText.getText().toString());
+			customer.setEmail(emailEditText.getText().toString());
+			saveCustomerRequest.setCustomer(customer);
+			AddressWeb address = new AddressWeb();
+			address.setAddressLine1(address1EditText.getText().toString());
+			address.setAddressLine2(address2EditText.getText().toString());
+			address.setAddressLine3(address3EditText.getText().toString());
+			address.setPin(Integer.parseInt(pinEditText.getText().toString()));
+			address.setStateId(((StateWeb)stateSP.getSelectedItem()).getId());
+			address.setDistrictId(((DistrictWeb)districtSP.getSelectedItem()).getId());
+			address.setCityVillageId(((CityVillageWeb)citySP.getSelectedItem()).getId());
+			address.setLocalAreaId(((LocalAreaWeb)colonySP.getSelectedItem()).getId());
+			address.setAddressType("Home");
+			saveCustomerRequest.setAddress(address);
+			
+			saveCustomerAsync(saveCustomerRequest);
+			
+			intent = new Intent(CreateCustomerActivity.this,SearchCustomerActivity.class);
 			startActivity(intent);
 			break;
 
@@ -227,6 +262,23 @@ public class CreateCustomerActivity extends Activity implements
 			startActivity(intent);
 			break;
 		}
+	}
+	private void saveCustomerAsync(final SaveCustomerRequest saveCustomerRequest){
+		new NextAsyncTask<String, String, CustomerWeb>() {
+
+			@Override
+			protected CustomerWeb doInBackground(String... params) {
+				try {
+					CustomerWeb customerWeb = DataServiceFactory.getDataServices().saveCustomer(saveCustomerRequest);
+					log("CustomerId = "+customerWeb.getId());
+					return customerWeb;
+				} catch (AppException e) {
+					e.printStackTrace();
+				}
+				return null;
+			}
+			
+		}.execute();
 	}
 	public void updateMapLocation(double lat,double lng,int depth){
 		LatLng newMarkerPosition = new LatLng(lat, lng);
@@ -271,7 +323,8 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<DistrictWeb>> onCreateLoader(
 									int id, Bundle args) {
-								progress.setVisibility(View.VISIBLE);
+								districtProgressBar.setVisibility(View.VISIBLE);
+								districtSP.setVisibility(View.GONE);
 								return new DistrictWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -280,13 +333,14 @@ public class CreateCustomerActivity extends Activity implements
 							public void onLoadFinished(
 									Loader<List<DistrictWeb>> arg0,
 									List<DistrictWeb> arg1) {
+								districtProgressBar.setVisibility(View.GONE);
+								districtSP.setVisibility(View.VISIBLE);
 								List<DistrictWeb> districts = new ArrayList<DistrictWeb>(arg1);
 								DistrictWeb selectDistrict = new DistrictWeb();
 								selectDistrict.setName("Select District");
 								selectDistrict.setId(-1L);
 								districts.add(0, selectDistrict);
 								setDistrictAdapter(districts);
-								progress.setVisibility(View.GONE);
 							}
 
 							@Override
@@ -335,7 +389,8 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<CityVillageWeb>> onCreateLoader(
 									int id, Bundle args) {
-								progress.setVisibility(View.VISIBLE);
+								cityProgressBar.setVisibility(View.VISIBLE);
+								citySP.setVisibility(View.GONE);
 								return new CityVillageWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -344,13 +399,14 @@ public class CreateCustomerActivity extends Activity implements
 							public void onLoadFinished(
 									Loader<List<CityVillageWeb>> arg0,
 									List<CityVillageWeb> citylist) {
+								cityProgressBar.setVisibility(View.GONE);
+								citySP.setVisibility(View.VISIBLE);
 								List<CityVillageWeb> cityVillageWebs = new ArrayList<CityVillageWeb>(citylist);
 								CityVillageWeb selectCityVillageWeb = new CityVillageWeb();
 								selectCityVillageWeb.setName("Select CIty/Village");
 								selectCityVillageWeb.setId(-1L);
 								cityVillageWebs.add(0,selectCityVillageWeb);
 								setCityAdapter(cityVillageWebs);
-								progress.setVisibility(View.GONE);
 							}
 
 							@Override
@@ -395,7 +451,8 @@ public class CreateCustomerActivity extends Activity implements
 							@Override
 							public Loader<List<LocalAreaWeb>> onCreateLoader(
 									int id, Bundle args) {
-								progress.setVisibility(View.VISIBLE);
+								colonyProgressBar.setVisibility(View.VISIBLE);
+								colonySP.setVisibility(View.GONE);
 								return new LocalAreaWebLoader(
 										CreateCustomerActivity.this, itemid);
 							}
@@ -410,7 +467,8 @@ public class CreateCustomerActivity extends Activity implements
 								localAreaWeb.setId(-1L);
 								localAreas.add(0,localAreaWeb);
 								setColoneyAdapter(localAreas);
-								progress.setVisibility(View.GONE);
+								colonyProgressBar.setVisibility(View.GONE);
+								colonySP.setVisibility(View.VISIBLE);
 							}
 
 							@Override

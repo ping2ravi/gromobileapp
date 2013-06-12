@@ -8,6 +8,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,8 +37,8 @@ import com.next.grocerysale.util.JsonUtil;
 
 public class DataServicesImpl implements DataServices {
 
-	//private static final String baseUrl = "http://192.168.1.4:8081/Grocery/api/";
-	private static final String baseUrl = "http://208.109.232.106:8082/grocery/api/";
+	private static final String baseUrl = "http://192.168.1.5:8081/grocery/api/";
+	//private static final String baseUrl = "http://208.109.232.106:8082/grocery/api/";
 	
 	private static final String getAllItemCategoriesUrl = "category/getallcategories";
 	private static final String getAllItemByCategoryUrl = "item/getitembycategory";
@@ -67,12 +68,13 @@ public class DataServicesImpl implements DataServices {
 		Log.i("DataServicesImpl","Hitting Post Url "+ url);
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(new MediaType("application", "json"));
-		
+		//requestHeaders.set("Connection", "Close");
 		HttpEntity<Object> requestEntity = new HttpEntity<Object>(message,requestHeaders);
 		String postBody = new Gson().toJson(message);
 		Log.i("DataServicesImpl","Posting "+ postBody);
 
 		RestTemplate restTemplate = new RestTemplate();
+		restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 
 		ResponseEntity<T> responseNtity = restTemplate.postForEntity(url, requestEntity, responseType);
@@ -82,7 +84,7 @@ public class DataServicesImpl implements DataServices {
 		Log.i("DataServicesImpl","Hitting Post Url "+ url);
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(new MediaType("application", "json"));
-		
+		//requestHeaders.set("Connection", "Close");
 		HttpEntity<Object> requestEntity = new HttpEntity<Object>(message,requestHeaders);
 		
 		RestTemplate restTemplate = new RestTemplate(true);
@@ -97,7 +99,7 @@ public class DataServicesImpl implements DataServices {
 		Log.i("DataServicesImpl","Hitting Get Url "+ url);
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setContentType(new MediaType("application", "json"));
-		
+		//requestHeaders.set("Connection", "Close");
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 		

@@ -27,13 +27,16 @@ public class LocalAreaWebLoader extends AsyncTaskLoader<List<LocalAreaWeb>> {
 
 	@Override
 	public List<LocalAreaWeb> loadInBackground() {
-		try {
-			return dataServices.getAllLocalAreaOfCityVillage(itemid);
-		} catch (AppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<LocalAreaWeb> localAreaWebs = null;
+		for(int i=0;i<3;i++){
+			try {
+				localAreaWebs = dataServices.getAllLocalAreaOfCityVillage(itemid);
+				break;
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
-		return null;
+		return localAreaWebs;
 	}
 
 	@Override

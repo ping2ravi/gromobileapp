@@ -26,19 +26,19 @@ public class StateWebLoader extends AsyncTaskLoader<List<StateWeb>> {
 	@Override
 	public List<StateWeb> loadInBackground() {
 		Log.i("StateWebLoader", "Loading States");
-		List<StateWeb> states;
-		try {
-			states = dataServices.getAllStates();
-			Log.i("StateWebLoader", "States Loaded");
-			Log.i("StateWebLoader", "List = "+states);
-			return states;
-		} catch (AppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return null;
+		List<StateWeb> states = null;
 
+		for (int i = 0; i < 3; i++) {
+			try {
+				states = dataServices.getAllStates();
+				Log.i("StateWebLoader", "List = " + states);
+				break;
+			} catch (AppException e) {
+				e.printStackTrace();
+			}
+
+		}
+		return states;
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class StateWebLoader extends AsyncTaskLoader<List<StateWeb>> {
 		// TODO Auto-generated method stub
 		super.deliverResult(data);
 	}
-	
+
 	private void onReleaseResources(Object cachedSaleItems2) {
 		// TODO Auto-generated method stub
 
@@ -82,5 +82,5 @@ public class StateWebLoader extends AsyncTaskLoader<List<StateWeb>> {
 		// TODO Auto-generated method stub
 		super.forceLoad();
 	}
-	
+
 }

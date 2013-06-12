@@ -27,13 +27,18 @@ public class CityVillageWebLoader extends AsyncTaskLoader<List<CityVillageWeb>> 
 
 	@Override
 	public List<CityVillageWeb> loadInBackground() {
-		try {
-			return dataServices.getAllCityVillageOfDistrict(itemid);
-		} catch (AppException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		List<CityVillageWeb> returnList = null;
+		for(int i=0;i<3;i++){
+			try {
+				returnList =  dataServices.getAllCityVillageOfDistrict(itemid);
+				break;
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
 		}
-		return null;
+		return returnList;
 	}
 
 

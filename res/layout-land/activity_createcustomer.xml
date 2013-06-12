@@ -53,7 +53,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext_selector"
-                android:inputType="textPersonName" />
+                android:inputType="phone" />
 
             <TextView
                 android:id="@+id/customermobile2TV"
@@ -70,7 +70,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext_selector"
-                android:inputType="textPersonName" />
+                android:inputType="phone" />
 
             <TextView
                 android:id="@+id/emailTV"
@@ -89,11 +89,7 @@
                 android:background="@drawable/edittext_selector"
                 android:inputType="textEmailAddress" />
 
-            <ProgressBar
-                android:id="@+id/stateProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+            
 
             <TextView
                 android:id="@+id/StateTV"
@@ -103,6 +99,11 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
+			<ProgressBar
+                android:id="@+id/stateProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
             <Spinner
                 android:id="@+id/StateSP"
                 android:layout_width="match_parent"
@@ -117,7 +118,11 @@
                 android:text="@string/district"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
-
+			<ProgressBar
+            android:id="@+id/districtProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
             <Spinner
                 android:id="@+id/districtSP"
                 android:layout_width="match_parent"
@@ -132,7 +137,11 @@
                 android:text="@string/city"
                 android:textColor="@color/black"
                 android:textSize="14sp" />
-
+			<ProgressBar
+            android:id="@+id/cityProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
             <Spinner
                 android:id="@+id/citySP"
                 android:layout_width="match_parent"
@@ -148,6 +157,11 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
 
+			<ProgressBar
+            android:id="@+id/colonyProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
             <Spinner
                 android:id="@+id/colonySP"
                 android:layout_width="match_parent"
@@ -204,7 +218,7 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginTop="5dp"
                 android:background="@drawable/edittext_selector"
-                android:inputType="text" />
+                android:inputType="number" />
         </LinearLayout>
     </ScrollView>
 

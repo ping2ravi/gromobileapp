@@ -33,7 +33,6 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.next.core.exception.AppException;
 import com.next.grocery.client.AddressWeb;
 import com.next.grocery.client.CityVillageWeb;
 import com.next.grocery.client.CustomerWeb;
@@ -226,7 +225,6 @@ public class CreateCustomerActivity extends BaseActivity implements
 	public void onClick(View view)
 
 	{
-		Intent intent;
 
 		switch (view.getId()) {
 
@@ -252,12 +250,10 @@ public class CreateCustomerActivity extends BaseActivity implements
 			
 			saveCustomerAsync(saveCustomerRequest);
 			
-			intent = new Intent(CreateCustomerActivity.this,SearchCustomerActivity.class);
-			startActivity(intent);
 			break;
 
 		case R.id.cancelBtn:
-			intent = new Intent(CreateCustomerActivity.this,
+			Intent intent = new Intent(CreateCustomerActivity.this,
 					CustomerActivity.class);
 			startActivity(intent);
 			break;
@@ -271,8 +267,14 @@ public class CreateCustomerActivity extends BaseActivity implements
 				try {
 					CustomerWeb customerWeb = DataServiceFactory.getDataServices().saveCustomer(saveCustomerRequest);
 					log("CustomerId = "+customerWeb.getId());
+
+					Intent intent = new Intent(CreateCustomerActivity.this,SearchCustomerActivity.class);
+					intent.putExtra("NewCustomer", customerWeb);
+					startActivity(intent);
+					finish();
+
 					return customerWeb;
-				} catch (AppException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 				return null;

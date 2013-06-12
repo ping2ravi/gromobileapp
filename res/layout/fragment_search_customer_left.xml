@@ -26,7 +26,12 @@
             android:text="@string/state"
             android:textColor="@color/black"
             android:textSize="12sp" />
-
+		<ProgressBar
+            android:id="@+id/stateProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
         <Spinner
             android:id="@+id/statesearchSP"
             android:layout_width="match_parent"
@@ -40,7 +45,12 @@
             android:text="@string/district"
             android:textColor="@color/black"
             android:textSize="12sp" />
-
+		<ProgressBar
+            android:id="@+id/districtProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
         <Spinner
             android:id="@+id/districtsearchSP"
             android:layout_width="match_parent"
@@ -54,7 +64,12 @@
             android:text="@string/city"
             android:textColor="@color/black"
             android:textSize="12sp" />
-
+		<ProgressBar
+            android:id="@+id/cityProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
         <Spinner
             android:id="@+id/citysearchSP"
             android:layout_width="match_parent"
@@ -68,7 +83,12 @@
             android:text="@string/colony"
             android:textColor="@color/black"
             android:textSize="12sp" />
-
+		<ProgressBar
+            android:id="@+id/localareaProgressbar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="center" />
         <Spinner
             android:id="@+id/colonoysearchSP"
             android:layout_width="match_parent"
@@ -79,6 +99,7 @@
             android:id="@+id/searchProgressbar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_gravity="center" />
 
         <RadioButton

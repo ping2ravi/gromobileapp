@@ -1,5 +1,6 @@
 package com.next.grocerysale;
 
+import com.next.grocery.client.CustomerWeb;
 import com.next.grocerysale.server.services.DataServices;
 import com.next.grocerysale.services.impl.DataServiceFactory;
 
@@ -7,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
 @SuppressLint("NewApi")
 public class SearchCustomerActivity extends BaseActivity implements
@@ -19,16 +22,8 @@ public class SearchCustomerActivity extends BaseActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_customersearch);
 
-		/*
-		 * String namedata = getIntent().getStringExtra("namedata"); if
-		 * (namedata != null) {
-		 * 
-		 * SearchCustomerRightFragment customersearchrightfrag =
-		 * (SearchCustomerRightFragment) getFragmentManager()
-		 * .findFragmentById(R.id.customersearchRightFragment);
-		 * Log.i("namedata", namedata);
-		 * customersearchrightfrag.setlist(namedata); }
-		 */
+		CustomerWeb customer = (CustomerWeb)getIntent().getSerializableExtra("NewCustomer");
+		//Now add this customer to right side table
 
 	}
 
@@ -54,5 +49,14 @@ public class SearchCustomerActivity extends BaseActivity implements
 			// intent.putExtra(DetailActivity.EXTRA_URL, link);
 			startActivity(intent);
 		}
+	}
+	
+	public void onClick(View view) {
+		switch(view.getId()){
+		case R.id.searchBtn :
+			Toast.makeText(this, "Clicked on Search", Toast.LENGTH_SHORT).show();
+			break;
+		}
+		
 	}
 }

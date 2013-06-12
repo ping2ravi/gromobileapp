@@ -27,13 +27,16 @@ public class DistrictWebLoader extends AsyncTaskLoader<List<DistrictWeb>> {
 
 	@Override
 	public List<DistrictWeb> loadInBackground() {
+		List<DistrictWeb> districts = null;
+		for (int i = 0; i < 3; i++) {
 		try {
-			return dataServices.getAllDistrictOfState(itemid);
-		} catch (AppException e) {
-			// TODO Auto-generated catch block
+			districts =  dataServices.getAllDistrictOfState(itemid);
+			break;
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return null;
+		}
+		return districts;
 	}
 
 	@Override
